@@ -1,8 +1,7 @@
-from time import sleep
-
 import keyboard
 import pyclip
 import pyautogui
+from pyautogui import sleep
 from deep_translator import GoogleTranslator
 
 import pyperclip
@@ -84,11 +83,20 @@ def copy_translate_paste():
         pyautogui.hotkey("ctrl", "v")
     except Exception as e:
         print(e)
+def translate_highlighted_text():#in window
 
-def copy_translate(): copy_translate_paste()
-def revers_symb(): eng_to_russian_or_vice_versa()
-keyboard.add_hotkey("right shift", copy_translate)
-keyboard.add_hotkey("ctrl+right shift", revers_symb)
+    sleep(0.2)
+    pyautogui.hotkey("ctrl", "c")
+    sleep(0.2)
+    copy_text = pyperclip.paste()
+    transleted_text = GoogleTranslator(source='en', target='ru').translate(copy_text)
+    sleep(0.5)
+    pyautogui.alert(text=transleted_text, title='Translator', button='OK', timeout=10000)
+
+keyboard.add_hotkey("right shift", lambda :copy_translate_paste())
+keyboard.add_hotkey("ctrl+right shift", lambda :eng_to_russian_or_vice_versa())
+keyboard.add_hotkey(
+    "win+right shift", lambda :translate_highlighted_text(), )
 keyboard.wait("right")
 keyboard.wait("right")
 keyboard.wait("right")
